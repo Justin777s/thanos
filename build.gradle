@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'groovy'
 
+//buildscript中的声明是gradle脚本自身需要使用的资源
 buildscript {
     repositories {
         jcenter()
@@ -10,14 +12,42 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
+
+
+
 }
 
 allprojects {
     repositories {
         jcenter()
+       //本地仓库
+      //  url "$rootDir/module_name/libs/android"
     }
+
+    //全局设定编码
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+    }
+
+    //全局设置java版本
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+
+
+
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+dependencies {
+    compile localGroovy()
+}
+
+

@@ -17,6 +17,52 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //签名配置
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE_PATH)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    //删除unaligned apk
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+
+            // 删除unaligned apk  TODO
+            if (output.zipAlign != null) {
+                output.zipAlign.doLast {
+                    output.zipAlign.inputFile.delete()
+
+                }
+            }
+        }
+    }
+   // lint选项开关
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    def rootDir = "J:/temp"
+
+    //更改生产的aar的位置
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            if (output.outputFile != null && output.outputFile.name.endsWith('.aar')) {
+                def name = "${rootDir}/${output.outputFile.name}"
+                output.outputFile = file(name)
+                println("----debug:"+name)
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -24,7 +70,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.+'
-    compile 'com.android.support:design:25.+'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
     testCompile 'junit:junit:4.12'
 }
+
+
