@@ -5,12 +5,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import org.justin777s.thanos.android.jgarage.utils.JLog;
 
+
+public class MainActivity2 extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity2";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,22 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int index = 100;
+        for(int i = 0 ;i<10;i++){
+            index +=  1;
+        }
+
+
+        JLog.d( TAG,"index="+index);
     }
 
     @Override
