@@ -1,9 +1,10 @@
-package org.justin777s.thanos.android.jgarage.utils;
+package org.justin.thanos.utils;
 
 import android.support.annotation.NonNull;
 
-import org.justin777s.thanos.android.jgarage.BuildConfig;
 import com.thanos.android.core.utils.Logger;
+
+import org.justin.thanos.BuildConfig;
 
 
 /**

@@ -19,4 +19,8 @@ public class Logger {
             Log.d( tag  ,""+info);
         }
     }
+
+    public static void d(String tag, String s) {
+
+    }
 }

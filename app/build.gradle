@@ -4,12 +4,15 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
-        applicationId "org.justin777s.thanos.android.jgarage"
+        applicationId "org.justin.thanos"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexKeepProguard file('multidex.pro')
+        multiDexKeepFile(file('multidexkeep.txt'))
     }
     buildTypes {
         release {

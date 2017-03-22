@@ -1,0 +1,113 @@
+import com.sun.corba.se.impl.orbutil.graph.Graph
+
+
+//声明无返回值函数
+def nonReturnTypeFunction(){
+    def echo = "：I am a person."
+    println  "nonReturnTypeFunction"+echo;
+}
+
+String getString(){
+//      return 'I am  $ dolloar'
+    def x= 99;
+    println(x.getClass().getCanonicalName());
+    return  "I am $x dolloar" ;
+//    return "biz+getString()";
+}
+
+int getInt(){
+    return 777
+}
+
+def testListMapRange(){
+    //List
+    def aList = [5,"abc",true];
+    aList[1] = false;
+    println(aList.size()+'-'+aList[1]);
+
+    //Map类
+    def aMap = ["tom":21,"jeck":"dfdfd","gaga":false] ;
+
+    println(aMap.size()+'-'+aMap.jeck+'-'+aMap.gaga );
+    aMap.jeck = 'jeck';
+    println(aMap.size()+'-'+aMap.jeck+'-'+aMap.gaga );
+
+
+    def aRanage = 1..8
+    println(aRanage.from)
+    println(aRanage.to)
+    println(aRanage[2])
+
+}
+
+
+
+    //闭包
+ def aClosure = {
+        String p,int p2 ->
+            def str ="p:"+p+"-p2:"+p2 ;
+            println str ;
+            return str ;
+  }
+
+
+def testListEach(){
+    def iamList = [1,2,3,4,5]
+    iamList.each {
+
+        print(it) ;
+
+    }
+}
+
+
+task callFunction{
+
+    println "-------------------"
+
+    nonReturnTypeFunction();
+    println getString();
+    println getInt();
+    println(getString());
+
+    testListMapRange();
+
+//    aClosure.call("Justin",12)
+    assert aClosure.call("Justin",12)=='p:Justin-p2:12'
+
+    testListEach();
+    println ""
+    println "-------------------"
+}
+
+
+
+task hello{
+
+
+    doLast {
+        println "运行阶段打印输出"
+    }
+
+    println "配置阶段打印输出"
+}
+
+
+def funcBeforeProject(String str){
+    println "*********funcBeforeProject:"+str
+}
+
+gradle.beforeProject {
+
+    org.gradle.api.Project project ->
+        funcBeforeProject(project.getName());
+
+}
+
+gradle.taskGraph.whenReady {
+    println "*********gradle.taskGraph.whenReady"
+
+}
+
+
+gradle.buildFinished {}

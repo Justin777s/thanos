@@ -1,1 +1,10 @@
+
+
+def testSettingGradle(){
+    println '/**** Setting.Gradle 会在构建整个工程的时候执行 可以做一些初始化的操作 ****/ '
+}
+
+testSettingGradle();
+
+
 include ':app', ':lib', ':core'

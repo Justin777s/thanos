@@ -1,21 +1,32 @@
-package org.justin777s.thanos.android.jgarage;
+package org.justin.thanos;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import org.justin777s.thanos.android.jgarage.utils.JLog;
+import com.thanos.android.core.base.CoreBaseActivity;
+
+import org.justin.thanos.api.BookSearchResponse;
+import org.justin.thanos.api.DoubanApi;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
 
 
-public class MainActivity2 extends AppCompatActivity {
+public class HomeActivity extends CoreBaseActivity {
 
-    private static final String TAG = "MainActivity2";
-    
+    private static final String TAG = "HomeActivity";
+    private DoubanApi  mApi  = null ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +43,18 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
+//        doProcess();
+    }
 
+    private void doProcess(){
+        Application app2 = this.getApplication();
+        Application app = App.getInstance();
+        if(app2!=null){
+            Toast.makeText(this,"applicatin is not null !",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"applicatin is null !",Toast.LENGTH_SHORT).show();
+        }
+        // mApi = ReService.createApi(DoubanApi.class);
 
     }
 
@@ -40,13 +62,8 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        int index = 100;
-        for(int i = 0 ;i<10;i++){
-            index +=  1;
-        }
+//      loadData();
 
-
-        JLog.d( TAG,"index="+index);
     }
 
     @Override
@@ -69,5 +86,20 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+    public void loadData(){
+
+        Map<String, String> options = new HashMap<>();
+        options.put("q", "小王子");
+        options.put("tag", null);
+        options.put("start", "0");
+        options.put("count", "3");
+
+        Call<BookSearchResponse> call = mApi.getSearchBooks(options);
     }
 }
