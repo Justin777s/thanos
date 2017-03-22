@@ -1,18 +1,15 @@
 package org.justin.thanos.fragment;
 
-import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.LayoutParams;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.thanos.android.core.base.CoreBaseFragment;
-import com.thanos.android.core.utils.Logger;
 
 import org.justin.thanos.R;
 
@@ -28,7 +25,7 @@ import java.util.List;
  * @author Justin
  * @version 2017/3/22
  */
-public class MainListFrag extends CoreBaseFragment{
+public class MainListFrag extends CoreBaseFragment implements MyItemClickListener{
     private static final String TAG = "MainListFrag";
 
 
@@ -62,7 +59,7 @@ public class MainListFrag extends CoreBaseFragment{
 
 
         initData();
-        mAdapter = new ItemListAdapter();
+        mAdapter = new ItemListAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
 //        loadData();
@@ -84,14 +81,25 @@ public class MainListFrag extends CoreBaseFragment{
         }
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Snackbar.make(this.getView(),mDatas.get(position), 1000  ).show();
+    }
 
 
     class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemViewHolder>{
 
+        MyItemClickListener mLis = null;
+        ItemListAdapter( MyItemClickListener lis) {
+            mLis = lis ;
+        }
 
         @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            ItemViewHolder holder = new ItemViewHolder(LayoutInflater.from(mCtx).inflate(R.layout.vh_main_list,parent,false));
+            View v = LayoutInflater.from(mCtx).inflate(R.layout.vh_main_list,parent,false);
+            ItemViewHolder holder = new ItemViewHolder(
+            v ,mLis
+            );
 
             return holder;
         }
@@ -101,7 +109,7 @@ public class MainListFrag extends CoreBaseFragment{
 
                 holder.tv.setText(mDatas.get(position));
 
-            Logger.d(TAG, mDatas.get(position));
+
         }
 
 
@@ -116,16 +124,34 @@ public class MainListFrag extends CoreBaseFragment{
 
         }
 
-        class ItemViewHolder extends RecyclerView.ViewHolder{
+        class ItemViewHolder extends RecyclerView.ViewHolder  {
 
             TextView tv;
-
-            public ItemViewHolder(View itemView) {
+            private MyItemClickListener mListener;
+            public ItemViewHolder(View itemView,MyItemClickListener lis) {
 
                 super(itemView);
                 tv = (TextView) itemView.findViewById(R.id.tv_name);
+
+                mListener = lis;
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mListener.onItemClick(view,ItemViewHolder.this.getLayoutPosition());
+                    }
+                });
             }
+
+
         }
 
+
+
     }
+
+
+}
+  interface MyItemClickListener  {
+    public void onItemClick(View view,int position);
 }
